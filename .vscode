@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Generate SUMO net",
+      "type": "shell",
+      "command": "${workspaceFolder}/generate_net.sh",
+      "problemMatcher": []
+    }
+  ]
+}

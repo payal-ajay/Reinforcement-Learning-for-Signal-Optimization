@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <input>
+        <node-files value="simple_intersection.nod.xml"/>
+        <edge-files value="simple_intersection.edg.xml"/>
+    </input>
+    <output>
+        <net-file value="simple_intersection.net.xml"/>
+    </output>
+</configuration>

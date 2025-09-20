@@ -1,0 +1,11 @@
+<routes>
+    <!-- Define vehicle type -->
+    <vType id="car" accel="2.0" decel="4.5" sigma="0.5"
+           length="5" maxSpeed="20" color="1,0,0"/>
+
+    <!-- Continuous vehicle generation in all 4 directions -->
+    <flow id="north_south" type="car" begin="0" end="600" vehsPerHour="1800" from="N2C" to="C2S"/>
+    <flow id="south_north" type="car" begin="0" end="600" vehsPerHour="1800" from="S2C" to="C2N"/>
+    <flow id="east_west"  type="car" begin="0" end="600" vehsPerHour="1800" from="E2C" to="C2W"/>
+    <flow id="west_east"  type="car" begin="0" end="600" vehsPerHour="1800" from="W2C" to="C2E"/>
+</routes>

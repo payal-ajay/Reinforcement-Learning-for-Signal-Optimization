@@ -1,0 +1,86 @@
+#train_dqn.py for unlimited training
+import os
+import sys
+import traci
+import numpy as np
+import torch
+from stable_baselines3 import DQN
+
+# --- SUMO setup ---
+SUMO_BINARY = "sumo"   # training runs headless for speed
+SUMO_CONFIG = "simulation.sumocfg"
+
+TRAFFIC_LIGHT_ID = "C"
+
+# Define green light phases
+green_phases = [
+    "GGggrrrrGGggrrrr",  # N-S
+    "rrrrGGggrrrrGGgg"   # E-W
+]
+
+
+class TrafficEnv:
+    """Custom SUMO environment for RL."""
+    def __init__(self, max_steps=500):
+        self.max_steps = max_steps
+        self.step_count = 0
+
+    def reset(self):
+        self.step_count = 0
+        traci.start([SUMO_BINARY, "-c", SUMO_CONFIG])
+        return self._get_state()
+
+    def step(self, action):
+        """Take an action (0 = N-S green, 1 = E-W green)."""
+        traci.trafficlight.setRedYellowGreenState(TRAFFIC_LIGHT_ID, green_phases[action])
+        traci.simulationStep()
+        self.step_count += 1
+
+        state = self._get_state()
+        reward = -self._get_waiting_time()  # negative waiting time
+        done = self.step_count >= self.max_steps
+
+        return state, reward, done, {}
+
+    def _get_state(self):
+        """State = queue lengths on controlled lanes."""
+        state = []
+        for lane in traci.trafficlight.getControlledLanes(TRAFFIC_LIGHT_ID):
+            state.append(traci.lane.getLastStepHaltingNumber(lane))
+        return np.array(state, dtype=np.float32)
+
+    def _get_waiting_time(self):
+        total_wait = 0
+        for veh_id in traci.vehicle.getIDList():
+            total_wait += traci.vehicle.getWaitingTime(veh_id)
+        return total_wait
+
+    def close(self):
+        traci.close()
+
+
+def train_dqn(episodes=10):
+    env = TrafficEnv(max_steps=500)
+
+    # Simple DQN model
+    model = DQN("MlpPolicy", env=None, verbose=1)
+
+    for ep in range(episodes):
+        state = env.reset()
+        done = False
+        total_reward = 0
+
+        while not done:
+            action, _ = model.predict(state, deterministic=False)
+            next_state, reward, done, _ = env.step(action)
+
+            # Normally you'd use Replay Buffer, here simplified
+            state = next_state
+            total_reward += reward
+
+        env.close()
+        print(f"Episode {ep+1}/{episodes}, Total Reward: {total_reward}")
+
+
+if __name__ == "__main__":
+    train_dqn(episodes=5)
