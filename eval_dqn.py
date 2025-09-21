@@ -38,9 +38,10 @@ def evaluate(model_path=MODEL_FILE, steps=500):
     arrived = traci.simulation.getArrivedNumber()
     throughput = arrived - prev_arrived
     traci.close()
-    print("✅ RL eval finished")
+    print(" RL eval finished")
     print(f"Total waiting time: {total_wait:.2f}, total halts: {total_halts}, throughput: {throughput}")
     return {"total_wait": total_wait, "total_halts": total_halts, "throughput": throughput}
 
 if __name__ == "__main__":
     evaluate()
+
