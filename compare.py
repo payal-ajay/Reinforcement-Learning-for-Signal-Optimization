@@ -40,19 +40,20 @@ def evaluate_dqn(model_path, episodes=3, gui=False, max_steps=200):
 
 
 if __name__ == "__main__":
-    print("🚦 Running baseline fixed-time controller...")
+    print(" Running baseline fixed-time controller...")
     baseline_wait = run_baseline(episodes=3, max_steps=200)
-    print(f"🚦 Fixed-time avg wait: {baseline_wait:.2f}")
+    print(f" Fixed-time avg wait: {baseline_wait:.2f}")
 
-    print("🤖 Evaluating DQN model...")
+    print(" Evaluating DQN model...")
     dqn_wait, vehicles = evaluate_dqn("dqn_model.pth", episodes=3, gui=False, max_steps=200)
-    print(f"🤖 DQN avg wait: {dqn_wait:.2f}")
+    print(f" DQN avg wait: {dqn_wait:.2f}")
 
     # Efficiency calculation
     improvement = ((baseline_wait - dqn_wait) / baseline_wait) * 100 if baseline_wait > 0 else 0
-    print(f"📊 Efficiency Improvement: {improvement:.2f}%")
+    print(f" Efficiency Improvement: {improvement:.2f}%")
 
     if dqn_wait < baseline_wait:
-        print("✅ DQN performs better than baseline!")
+        print(" DQN performs better than baseline!")
     else:
-        print("⚠️ Baseline performed better in this test.")
+        print(" Baseline performed better in this test.")
+
