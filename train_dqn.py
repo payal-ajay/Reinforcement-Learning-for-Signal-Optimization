@@ -86,9 +86,10 @@ def train_dqn(episodes=5, headless=True):  # only 5 episodes for quick test
         print(f"Episode {e+1}/{episodes}, Total Reward: {total_reward}")
 
     torch.save(model.state_dict(), "dqn_model.pth")
-    print("✅ Training finished, model saved as dqn_model.pth")
+    print(" Training finished, model saved as dqn_model.pth")
     env.close()
 
 
 if __name__ == "__main__":
     train_dqn(episodes=5, headless=True)
+
