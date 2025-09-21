@@ -20,7 +20,7 @@ class SumoIntersectionEnv(gym.Env):
 
         # Detect available TLS automatically
         tls_ids = traci.trafficlight.getIDList()
-        print("✅ Available TLS IDs:", tls_ids)
+        print(" Available TLS IDs:", tls_ids)
         if not tls_ids:
             raise RuntimeError("No traffic lights found in the network.")
         self.traffic_light_id = tls_ids[0]
@@ -28,7 +28,7 @@ class SumoIntersectionEnv(gym.Env):
         # Get phases dynamically
         logic = traci.trafficlight.getCompleteRedYellowGreenDefinition(self.traffic_light_id)[0]
         self.phases = [phase.state for phase in logic.getPhases()]
-        print(f"✅ Phases for {self.traffic_light_id}: {self.phases}")
+        print(f" Phases for {self.traffic_light_id}: {self.phases}")
 
         # Gym action/observation spaces
         self.action_space = spaces.Discrete(len(self.phases))  # pick a phase index
@@ -62,3 +62,4 @@ class SumoIntersectionEnv(gym.Env):
     def close(self):
         if traci.isLoaded():
             traci.close()
+
