@@ -7,79 +7,83 @@ Reinforcement Learning Agent: The core of the project is a DQN model built using
 
 
 
-Custom SUMO Environment: The sumo_env.py script provides a custom Gymnasium environment  that interfaces with the SUMO simulator via TraCI. The observation space is a 16-element array representing vehicle counts in different lanes. The action space has 4 discrete actions, corresponding to different traffic light phases.
+
+
+Custom SUMO Environment: The sumo_env.py script provides a custom Gymnasium environment that interfaces with the SUMO simulator via TraCI. The observation space is a 16-element array representing vehicle counts in different lanes. The action space has 4 discrete actions, corresponding to different traffic light phases.
 
 
 
-Performance Evaluation: The project includes multiple scripts to evaluate the DQN agent's performance. It can be compared to a fixed-time baseline using metrics like total waiting time, average waiting time, and total halts.
+Performance Comparison: The compare.py script automatically evaluates the trained DQN model against a traditional fixed-time traffic controller, highlighting the efficiency improvements achieved by the agent.
 
 
-
-
-Portable Configuration: All simulation settings, including the network topology (.net.xml) and vehicle routes (.rou.xml), are defined in easily modifiable XML files.
+Reusable Components: The project includes various utility scripts for generating the simulation network, evaluating models, and inspecting the environment.
 
 Getting Started
 Prerequisites
+
 SUMO: Make sure the SUMO simulator is installed and that the SUMO_HOME environment variable is set to your installation path.
 
-Python Libraries: The project's dependencies are listed in requirements.txt. You can install them with the following command:
+Python Libraries: All required Python dependencies are listed in requirements.txt. You can install them with a package manager like 
 
-Bash
+pip.
 
-pip install -r requirements.txt
 Project Structure
-**src/**:
+src/: This folder contains the main Python scripts for the project.
 
-train_dqn.py: Script to train a new DQN model.
+
+train_dqn.py: The script used to train a new DQN model.
+
 
 sumo_env.py: The custom Gymnasium environment for the simulation.
 
-eval.py, eval_dqn.py: Scripts to evaluate the trained DQN model.
 
-compare.py: Compares the DQN agent's performance against the baseline.
+eval.py, eval_dqn.py: Scripts for evaluating the trained DQN model.
+
+
+
+
+
+
+compare.py: The main script for comparing the DQN agent with the baseline.
+
+
 
 fixed_controller.py, baseline_fixed.py: Implementations of the fixed-time traffic light controller.
 
+
+
+
+
 test_traci.py, check_edges.py: Utility scripts for testing the SUMO connection and network.
 
-**sim_data/**:
-
-simple_intersection.netccfg: Configuration for generating the road network.
-
-simple_intersection.nod.xml, simple_intersection.edg.xml: Defines the nodes and edges for the network.
 
 
-simple_intersection.rou.xml: Defines vehicle types and traffic flow.
+sim_data/: This folder contains the SUMO network and route files.
+
+
+simple_intersection.net.xml, simple_intersection.nod.xml, simple_intersection.edg.xml, simple_intersection.rou.xml: Defines the road network and traffic flows.
 
 
 
-simple_intersection.sumocfg: Main configuration for the simulation run.
+
+simple_intersection.sumocfg: The main configuration file for the simulation.
+
+model/: This folder contains the trained model files.
 
 
-**model/**:
-
-dqn_model.pth: The trained PyTorch model.
+dqn_model.pth: The saved PyTorch model.
 
 
 dqn_sumo_tls.zip: A compressed file containing the model and other training details, including the system info.
 
 
-
 How to Run
 Run the Comparison:
-The main script to see the project in action is compare.py. It runs both the baseline and the DQN model to show the performance difference.
+The main purpose of this project is to compare the intelligent agent with a standard controller. You can see the results by running the compare.py script. It will automatically run both the baseline and the DQN model, and then print the average waiting times and efficiency improvements.
 
-Bash
-
-python compare.py
 Train a New Model:
-To train a new DQN model, run the train_dqn.py script. The script will save the trained model to a file named dqn_model.pth.
+If you want to train a new model from scratch, you can run the train_dqn.py script. After it finishes, it will save a new model file named dqn_model.pth.
 
-Bash
-
-python train_dqn.py
 Individual Simulations:
+To see the simulation in action, you can run the individual evaluation scripts with the GUI enabled. For example, you can run the fixed_controller.py script to see the baseline in action, or eval_dqn.py to see the trained agent in action.
 
-To run the fixed-time baseline with a GUI: python fixed_controller.py.
-
-To evaluate the DQN model with a GUI: python eval.py
