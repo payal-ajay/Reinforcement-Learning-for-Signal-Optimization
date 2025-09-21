@@ -11,7 +11,7 @@ def main(gui=False, steps=20):
     sumo_bin = checkBinary('sumo-gui' if gui else 'sumo')
     print("DEBUG: About to start SUMO...")
     traci.start([sumo_bin, "-c", "simple_intersection.sumocfg", "--no-step-log", "true"])
-    print("✅ SUMO started via TraCI (gui=%s)" % gui)
+    print(" SUMO started via TraCI (gui=%s)" % gui)
 
     try:
         for step in range(steps):
@@ -21,8 +21,9 @@ def main(gui=False, steps=20):
             time.sleep(0.05)
     finally:
         traci.close()
-        print("✅ SUMO closed cleanly")
+        print(" SUMO closed cleanly")
 
 if __name__ == "__main__":
     print("DEBUG: Running main() now...")
     main(gui=True, steps=100)
+
